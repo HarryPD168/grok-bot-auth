@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grok-bot-auth</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="kicker">standalone · rust</p>
+      <h1>grok-bot-auth</h1>
+    </div>
+    <p class="status" id="server-status">启动中…</p>
+  </header>
+  <main class="grid">
+    <section class="panel">
+      <h2>账号</h2>
+      <p class="hint">来自 grok-auth 的导入/刷新，登录链是 Grok Bot 的 loginDeepControl，不是 xAI。</p>
+      <p id="account-line" class="lead">未登录</p>
+      <label>导入 JSON（accessToken / refreshToken / machineId）</label>
+      <textarea id="import-json" rows="7" placeholder='{"accessToken":"...","refreshToken":"...","machineId":"..."}'></textarea>
+      <div class="row">
+        <button type="button" id="btn-import">导入会话</button>
+        <button type="button" class="ghost" id="btn-login">Cursor 登录</button>
+        <button type="button" class="ghost" id="btn-refresh">刷新</button>
+        <button type="button" class="ghost" id="btn-logout">退出</button>
+      </div>
+      <p id="login-help" class="hint"></p>
+    </section>
+    <section class="panel">
+      <h2>与 Cursor 共存</h2>
+      <p class="hint">官方 Cursor 账号继续登录。启用后把全部 Grok Bot 目录合并进官方列表，可用模型带「可用」标记，id 为 gb-家族名，不会改写成官方 id。不要和 cursor-byok 同时开代理。</p>
+      <p id="cursor-line" class="lead">未接入</p>
+      <div class="row">
+        <button type="button" id="btn-cursor-on">启用共存</button>
+        <button type="button" class="ghost" id="btn-cursor-off">停用</button>
+      </div>
+      <p id="cursor-help" class="hint"></p>
+    </section>
+    <section class="panel wide">
+      <h2>模型调度</h2>
+      <p class="hint">完整 sand 目录按名称排序，不会因 Stream 不可用而移除。绿色「可用」表示当前 grok_bot 推理白名单；其余仍保留。Cursor 共存注入 id 为 <code>gb-家族名</code>，可用模型可直接指定。</p>
+      <div class="model-toolbar row">
+        <button type="button" id="btn-sync">同步模型</button>
+      </div>
+      <div class="model-list" id="model-list" role="listbox" aria-label="模型目录"></div>
+      <label>当前模型</label>
+      <select id="model"></select>
+      <label>思考强度 effort</label>
+      <select id="effort">
+        <option>low</option>
+        <option>medium</option>
+        <option selected>high</option>
+        <option>xhigh</option>
+      </select>
+      <label class="check"><input type="checkbox" id="fast"> Fast</label>
+      <p id="model-meta" class="hint"></p>
+    </section>
+    <section class="panel wide">
+      <h2>试聊</h2>
+      <p class="hint">走 aiserver.v1.InferenceService/Stream（grokBotToken）。思考增量先于正文。OpenAI 兼容口：<code>http://127.0.0.1:47821/v1</code></p>
+      <textarea id="prompt" rows="3" placeholder="发一条测试消息"></textarea>
+      <div class="row">
+        <button type="button" id="btn-send">发送</button>
+      </div>
+      <pre class="think" id="think"></pre>
+      <pre class="out" id="out"></pre>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

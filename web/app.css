@@ -1,0 +1,160 @@
+:root {
+  --bg: #0e1110;
+  --bg-lift: #151a18;
+  --panel: #181e1b;
+  --ink: #f3efe4;
+  --mute: #8b9388;
+  --line: #2c3530;
+  --accent: #c8f54a;
+  --accent-ink: #14180c;
+  --ok: #7ee0a3;
+  --ok-bg: rgba(126, 224, 163, 0.12);
+  --warn: #c4b49a;
+  --warn-bg: rgba(196, 180, 154, 0.12);
+  --radius: 16px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 500px at 8% -10%, rgba(200, 245, 74, 0.08), transparent 55%),
+    radial-gradient(900px 400px at 100% 0%, rgba(90, 140, 120, 0.12), transparent 50%),
+    var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 28px 36px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.kicker {
+  margin: 0;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--accent);
+}
+h1 { margin: 6px 0 0; font-size: 30px; font-weight: 650; letter-spacing: -0.03em; }
+.status { margin: 0; color: var(--mute); max-width: 48ch; text-align: right; }
+.grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  padding: 22px 36px 48px;
+}
+.panel {
+  background: linear-gradient(180deg, var(--panel), var(--bg-lift));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow);
+}
+.panel.wide { grid-column: 1 / -1; }
+h2 { margin: 0 0 6px; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; color: #d5ddcf; }
+.hint { color: var(--mute); font-size: 13px; margin: 0 0 12px; }
+.lead { font-size: 16px; margin: 8px 0 12px; }
+label {
+  display: block;
+  margin: 14px 0 6px;
+  color: var(--mute);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+textarea, select, button, code, input { font: inherit; }
+textarea, select {
+  width: 100%;
+  background: #0c100f;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 12px;
+}
+textarea:focus, select:focus {
+  outline: 2px solid rgba(200, 245, 74, 0.35);
+  border-color: #5a6a40;
+}
+.row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+button {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 650;
+}
+button:hover { filter: brightness(1.05); }
+button.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  color: var(--ink);
+}
+.think {
+  min-height: 48px;
+  color: #b7c48a;
+  white-space: pre-wrap;
+  margin: 12px 0 0;
+}
+.out {
+  min-height: 108px;
+  white-space: pre-wrap;
+  background: #0c100f;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+.model-toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.model-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  max-height: 280px;
+  overflow: auto;
+  margin: 10px 0 4px;
+  padding-right: 4px;
+}
+.model-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  background: #101513;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.model-card, .model-card .name { color: var(--ink); }
+.model-card[aria-selected="true"] { border-color: var(--accent); }
+.model-card .name { font-size: 13px; }
+.tag {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.tag.ok { color: var(--ok); background: var(--ok-bg); }
+.tag.dir { color: var(--warn); background: var(--warn-bg); }
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; padding: 14px; }
+  .top { padding: 16px; }
+  .status { text-align: left; }
+}

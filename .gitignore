@@ -1,0 +1,14 @@
+/target
+/dist
+**/*.rs.bk
+*.log
+*.pdb
+*.exe
+account.json
+accounts.json
+providers.json
+prefs.json
+.env
+.DS_Store
+Thumbs.db
+/.md

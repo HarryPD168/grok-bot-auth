@@ -14,6 +14,8 @@
 
 共存靠 Cursor 用户级 **hook**，**不是** MITM：不写 `http.proxy`、不装根证书。本软件没在跑时，hook 会 fail-open，官方聊天仍走 api2。
 
+逐步操作见 [使用说明.md](使用说明.md)。
+
 ## 安装（Windows）
 
 1. 打开 [Releases](https://github.com/HarryPD168/grok-bot-auth/releases)，下载当前版本目录里的 `Grok-Bot-Auth.exe`。

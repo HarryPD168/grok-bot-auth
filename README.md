@@ -1,49 +1,60 @@
 # Grok-Bot-Auth
 
-Standalone Rust desktop app that lets [Cursor](https://cursor.com) use a **Grok Bot sand session** (and imported providers) next to an official Cursor subscription.
+独立桌面程序（Rust）。在 **Cursor 官方订阅账号继续登录** 的前提下，把 **Grok Bot sand 会话** 和导入的供应商模型接到 Cursor 里用。
 
-- Official unsuffixed models (for example `grok-4.6`) stay on `api2.cursor.sh`.
-- Enabled models are injected as `gb-*` (display suffix `· Grok Bot` / `· xAI` / provider label) via `127.0.0.1:47821`.
-- Coexist is a Cursor extension **hook**, not MITM. No `http.proxy`, no root CA.
-- When this app is not running, the hook fail-opens to official Cursor.
+许可证：[MIT](LICENSE)
 
-License: [MIT](LICENSE).
+## 它做什么
 
-## Install
+| | 官方 Cursor | 本软件启用的模型 |
+|--|--|--|
+| 模型 id | 无前缀，例如 `grok-4.6` | `gb-*`，展示名带 `· Grok Bot` / `· xAI` / 供应商标签 |
+| 流量 | 直连 `api2.cursor.sh` | 本机 `127.0.0.1:47821` |
+| 额度 | Cursor 订阅 | Grok Bot / 你导入的 Key |
 
-Windows release folder (no zip): `Grok-Bot-Auth-<version>/Grok-Bot-Auth.exe` next to this repo, or build from source:
+共存靠 Cursor 用户级 **hook**，**不是** MITM：不写 `http.proxy`、不装根证书。本软件没在跑时，hook 会 fail-open，官方聊天仍走 api2。
+
+## 安装（Windows）
+
+1. 打开 [Releases](https://github.com/HarryPD168/grok-bot-auth/releases)，下载当前版本目录里的 `Grok-Bot-Auth.exe`。
+2. 关掉正在运行的旧进程（托盘「退出」，不要只关窗口）。
+3. 运行新 exe。数据在 `~/.grok-bot-auth/`（登录态、密钥，不要提交到 git）。
+
+从源码编译：
 
 ```bash
 cargo run --release
 ```
 
-Data dir: `~/.grok-bot-auth/` (tokens, never commit).
+## 和官方 Cursor 共存
 
-## Cursor coexist
+1. 在本软件登录或导入 Grok Bot 会话。
+2. **获取模型** → 勾选要用的 → 打开开关启用。
+3. 点 **启用共存**。
+4. **完全退出 Cursor 再开**（Reload 不够，必须结束进程）。
+5. 官方无前缀模型照常用；要用本软件请切带 `· Grok Bot` / `· xAI` / 供应商标签的项。
 
-1. Sign in / import a Grok Bot session in this app.
-2. Sync models, enable the ones you want, then **Enable coexist**.
-3. **Fully quit Cursor and reopen** (Reload is not enough).
-4. Official models stay official. Use `gb-*` / `· Grok Bot` / `· xAI` for this app.
-5. Close-to-tray keeps 47821 up. Tray **Quit** restores Cursor files.
+选择器里官方订阅和反代模型是分开的，反代项按供应商标签区分。
 
-Do not run cursor-byok MITM at the same time.
+关窗口只会进托盘，`47821` 还在听。要停共存：点 **停用共存**，或托盘 **退出**，然后再完全退出 Cursor。
 
-OpenAI-compatible local API: `http://127.0.0.1:47821/v1`
+不要和 cursor-byok 的 MITM 同时打 Cursor 补丁。不要再配 `http.proxy` 到 `47822`。
 
-## Constants (not secrets)
+给其它客户端的 OpenAI 兼容口：`http://127.0.0.1:47821/v1`
 
-| Item | Value | Why |
-|------|--------|-----|
-| Bind | `127.0.0.1:47821` | Local coexist entry |
-| Cursor sand API | `https://api2.cursor.sh` | Official sand backend |
-| Cursor OAuth client id | public desktop client id | Same as Cursor login |
-| Fallback Cursor version stamp | installed Cursor `package.json`, else `3.20.17` | api2 rejects outdated `0.47.0` |
-
-## Dev
+## 开发
 
 ```bash
 cargo test
 ```
 
-`probe-chat` is an optional diagnostic binary, not the desktop app.
+`probe-chat` 是可选诊断工具，不是桌面主程序。
+
+## 常量（不是密钥）
+
+| 项 | 值 |
+|----|-----|
+| 本机入口 | `127.0.0.1:47821` |
+| Cursor sand | `https://api2.cursor.sh` |
+| Cursor / xAI OAuth client id | 公开桌面客户端 id |
+| Cursor 版本戳 | 读取已安装 Cursor 的 `package.json`，否则 `3.20.17` |
